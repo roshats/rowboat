@@ -101,9 +101,9 @@ Bob,bob@example.com,25
 
 func TestComplexTypes(t *testing.T) {
 	// CSV data with various types
-	csvData := `name,created_at,active,score,count,rate,tags
-John,2023-01-02T15:04:05Z,true,98.6,42,3.14,test;debug
-Jane,2023-06-15T09:30:00Z,false,75.2,100,2.718,prod;live`
+	csvData := `name,created_at,active,score,count,rate,tags,rank
+John,2023-01-02T15:04:05Z,true,98.6,42,3.14,test;debug,1
+Jane,2023-06-15T09:30:00Z,false,75.2,100,2.718,prod;live,42`
 
 	reader := strings.NewReader(csvData)
 
@@ -125,6 +125,7 @@ Jane,2023-06-15T09:30:00Z,false,75.2,100,2.718,prod;live`
 			Count:     42,
 			Rate:      3.14,
 			Tags:      "test;debug",
+			Rank:      1,
 		},
 		{
 			Name:      "Jane",
@@ -134,6 +135,7 @@ Jane,2023-06-15T09:30:00Z,false,75.2,100,2.718,prod;live`
 			Count:     100,
 			Rate:      2.718,
 			Tags:      "prod;live",
+			Rank:      42,
 		},
 	}
 

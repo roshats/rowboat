@@ -72,6 +72,7 @@ func TestComplexWriter(t *testing.T) {
 			Count:     42,
 			Rate:      3.14,
 			Tags:      "test;debug",
+			Rank:      1,
 		},
 		{
 			Name:      "Jane",
@@ -81,6 +82,7 @@ func TestComplexWriter(t *testing.T) {
 			Count:     100,
 			Rate:      2.718,
 			Tags:      "prod;live",
+			Rank:      42,
 		},
 	}
 
@@ -127,6 +129,7 @@ func TestWriteAll(t *testing.T) {
 			Count:     42,
 			Rate:      3.14,
 			Tags:      "test;debug",
+			Rank:      1,
 		},
 		{
 			Name:      "Jane",
@@ -136,6 +139,7 @@ func TestWriteAll(t *testing.T) {
 			Count:     100,
 			Rate:      2.718,
 			Tags:      "prod;live",
+			Rank:      42,
 		},
 	}
 
