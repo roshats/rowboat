@@ -168,3 +168,48 @@ func TestCustomUnmarshaler(t *testing.T) {
 		t.Errorf("Parsed results do not match expected.\nExpected: %+v\nGot: %+v", expected, results)
 	}
 }
+
+func TestInvalidData(t *testing.T) {
+	t.Parallel()
+
+	panickedValue := func(f func()) (value any) {
+		defer func() {
+			value = recover()
+		}()
+
+		f()
+		return
+	}
+
+	test := func(t *testing.T, input string, expectedMessage string) {
+		reader := strings.NewReader(input)
+
+		rb, err := rowboat.NewReader[ComplexRecord](reader)
+		if err != nil {
+			t.Fatalf("Failed to create RowBoat: %v", err)
+		}
+
+		actualValue := panickedValue(func() {
+			slices.Collect(rb.All())
+		})
+
+		if actualValue == nil {
+			t.Errorf("Expected a panic for input '%s', but it was parsed without error", input)
+			return
+		}
+
+		actualError, ok := actualValue.(error)
+		if !ok {
+			t.Errorf("Expected a panic for input '%s', but received a non-error value: %v", input, actualValue)
+			return
+		}
+
+		actualMessage := actualError.Error()
+		if expectedMessage != actualMessage {
+			t.Errorf("Expected a panic for input '%s' with error message '%s', but got '%s'", input, expectedMessage, actualMessage)
+		}
+	}
+
+	test(t, "score\nnot-float", `error setting field Score: strconv.ParseFloat: parsing "not-float": invalid syntax`)
+	test(t, "rank\n-1", `error setting field Rank: strconv.ParseUint: parsing "-1": invalid syntax`)
+}
