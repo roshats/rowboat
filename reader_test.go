@@ -182,6 +182,8 @@ func TestInvalidData(t *testing.T) {
 	}
 
 	test := func(t *testing.T, input string, expectedMessage string) {
+		t.Helper()
+
 		reader := strings.NewReader(input)
 
 		rb, err := rowboat.NewReader[ComplexRecord](reader)
@@ -200,13 +202,13 @@ func TestInvalidData(t *testing.T) {
 
 		actualError, ok := actualValue.(error)
 		if !ok {
-			t.Errorf("Expected a panic for input '%s', but received a non-error value: %v", input, actualValue)
+			t.Errorf("Expected a panic for input '%s', but received a non-error value: %v (%[2]T)", input, actualValue)
 			return
 		}
 
 		actualMessage := actualError.Error()
 		if expectedMessage != actualMessage {
-			t.Errorf("Expected a panic for input '%s' with error message '%s', but got '%s'", input, expectedMessage, actualMessage)
+			t.Errorf("Expected a panic for input %q with error message %q, but got %q", input, expectedMessage, actualMessage)
 		}
 	}
 
