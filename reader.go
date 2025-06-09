@@ -197,11 +197,17 @@ func setFieldValue(field reflect.Value, value string) error {
 		if err != nil {
 			return err
 		}
+		if field.OverflowInt(intValue) {
+			return fmt.Errorf("value %d out of range for type %s", intValue, field.Kind())
+		}
 		field.SetInt(intValue)
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 		uintValue, err := strconv.ParseUint(value, 10, 64)
 		if err != nil {
 			return err
+		}
+		if field.OverflowUint(uintValue) {
+			return fmt.Errorf("value %d out of range for type %s", uintValue, field.Kind())
 		}
 		field.SetUint(uintValue)
 	case reflect.Float32, reflect.Float64:

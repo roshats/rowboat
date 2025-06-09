@@ -214,4 +214,7 @@ func TestInvalidData(t *testing.T) {
 
 	test(t, "score\nnot-float", `error setting field Score: strconv.ParseFloat: parsing "not-float": invalid syntax`)
 	test(t, "rank\n-1", `error setting field Rank: strconv.ParseUint: parsing "-1": invalid syntax`)
+	test(t, "rank\n1000", "error setting field Rank: value 1000 out of range for type uint8")
+	test(t, "int8\n1000", "error setting field Int8: value 1000 out of range for type int8")
+	test(t, "int8\n-1000", "error setting field Int8: value -1000 out of range for type int8")
 }

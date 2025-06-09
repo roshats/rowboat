@@ -21,7 +21,8 @@ type ComplexRecord struct {
 	Count     int       `csv:"count"`
 	Rate      float32   `csv:"rate"`
 	Tags      string    `csv:"tags"`
-	Rank      uint      `csv:"rank"`
+	Rank      uint8     `csv:"rank"`
+	Int8      int8      `csv:"int8"`
 }
 
 type Point struct {
